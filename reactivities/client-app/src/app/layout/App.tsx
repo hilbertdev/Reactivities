@@ -5,20 +5,26 @@ import { Container } from 'semantic-ui-react';
 import { Activity } from './models/Activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import {v4 as uuid} from 'uuid';
 
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
-  const [createActivity, setCreateActivity] = useState (false);
+  const [editMode, setEditMode] = useState (false);
   useEffect(() => {
     axios.get<Activity[]>("http://localhost:5000/api/activities").then(response => {
       console.log(response);
       setActivities(response.data);
     })
   }, [])
-  function toggleCreateActivity() {
-       setCreateActivity(createActivity => !createActivity)
+  function handleFormOpen(id?: string){
+    id ? handleSelectActivity(id) : handleCancelSelectActivity();
+    setEditMode(true);
+    console.log('here')
+  }
+  function handleFormClose() {
+    setEditMode(false);
   }
 
   function handleSelectActivity(id: string){
@@ -27,11 +33,20 @@ function App() {
   function handleCancelSelectActivity() {
     setSelectedActivity(undefined);
   }
+  function handleCreateOrEditActivity(activity : Activity) {
+    activity.id 
+    ? setActivities([...activities.filter( x => x.id !== activity.id), activity])
+    : setActivities([...activities, {...activity, id: uuid()}]);
+    setEditMode(false);
+    setSelectedActivity(activity);
+  }
+  function handleDeleteActivity(id: string) {
+    setActivities([...activities.filter(x => x.id !== id)]);
+  }
   return (
     <Fragment>
            <NavBar 
-          createActivityToggle ={toggleCreateActivity}
-          createActivity={createActivity}
+           openForm={handleFormOpen}
             />
        <Container style={{marginTop: '7em'}}>
          <ActivityDashboard 
@@ -39,7 +54,11 @@ function App() {
          selectedActivity={selectedActivity}
          selectActivity={handleSelectActivity}
          cancelSelectActivity={handleCancelSelectActivity}
-         createActivity = {createActivity}
+         editMode = {editMode}
+         openForm = {handleFormOpen}
+         closeForm ={handleFormClose}
+         createOrEdit={handleCreateOrEditActivity}
+         handleDelete={handleDeleteActivity}
          />
        </Container>
       </Fragment> 

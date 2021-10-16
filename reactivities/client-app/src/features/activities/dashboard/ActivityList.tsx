@@ -1,13 +1,13 @@
 import React from "react";
-import { act } from "react-dom/test-utils";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/layout/models/Activity";
 
 interface Props {
     activities: Activity[];
     selectActivity: (id: string) => void;
+    handleDelete: (id: string) => void;
 }
-export default function ActivityList({activities,selectActivity } : Props) {
+export default function ActivityList({activities,selectActivity, handleDelete } : Props) {
     return (
            <Segment>
                <Item.Group divided>
@@ -23,6 +23,7 @@ export default function ActivityList({activities,selectActivity } : Props) {
                              <Item.Description>
                                  <Item.Extra>
                                      <Button onClick={() => selectActivity(activity.id)} floated= 'right' content='View' color='blue' />
+                                     <Button onClick={() => handleDelete(activity.id)} floated= 'right' content='Delete' color='red' />
                                      <Label basic content={activity.category} />
                                  </Item.Extra>
                              </Item.Description>

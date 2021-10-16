@@ -1,11 +1,10 @@
 import React from "react";
 import { Button, Container, Menu } from "semantic-ui-react";
 interface Props {
-    createActivityToggle: (setActivity: boolean) => void;
-    createActivity: boolean;
+    openForm: (id?: string) => void;
 }
 
-export default function NavBar({createActivityToggle, createActivity}: Props) {
+export default function NavBar({openForm}: Props) {
     return (
         <Menu inverted fixed='top'>
 <Container>
@@ -14,7 +13,7 @@ export default function NavBar({createActivityToggle, createActivity}: Props) {
     </Menu.Item>
     <Menu.Item name="Activities" />
     <Menu.Item>
-        <Button positive content = 'Create Activity' onClick={() => createActivityToggle(createActivity)}/>
+        <Button positive content = 'Create Activity' onClick={() => openForm()}/>
     </Menu.Item>
 </Container>
         </Menu>
