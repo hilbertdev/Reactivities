@@ -16,7 +16,11 @@ function App() {
   const [loading, setLoading] =  useState(true);
   useEffect(() => {
     agent.Activities.list().then(response => {
-      setActivities(response);
+      var Activities: Activity[] = response
+      Activities.forEach(activity => {
+        activity.date = activity.date.split('T')[0];
+      });
+      setActivities(Activities);
       setLoading(false);
     })
   }, [])
