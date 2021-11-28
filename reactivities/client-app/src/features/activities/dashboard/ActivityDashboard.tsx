@@ -7,9 +7,13 @@ import ActivityList from "./ActivityList";
 
 export default observer( function ActivityDashboard() {
     const {activityStore} = useStore()
+    const {loadAcitvities, activityRegistry} = activityStore
     useEffect(() => {
-      activityStore.loadAcitvities()
-    })
+        if (activityRegistry.size <= 0)
+        {
+            loadAcitvities()
+        }
+    }, [activityRegistry.size, loadAcitvities])
     if (activityStore.loading) return <LoadingComponent content='Loading app' />
     return (
         <Grid>
