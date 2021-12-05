@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Activities;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
    public class ActivitiesController : BaseApiController
     {
-       
         [HttpGet]
         public async Task<IActionResult> GetActivities()
         {
